@@ -96,17 +96,17 @@ ex: python src/split_data.py data/topics_1.json data/qrel_1.tsv data/Answers.jso
 ```
 step 2: basic retrieval, run the following command: 
 ```bash
- python src/basic_retrieval.py data/Answers.json test_data.json topics2.json
+ ex: python src/basic_retrieval.py data/Answers.json test_data.json topics2.json
 ```
 step3: Fine-Tuning the Models:
 
  Run the Bi-encoder fine-tuning script:
  ```bash
- python src/train_bi_encoder.py data/train_data.json data/val_data.json models/bi_encoder_finetuned
+ ex: python src/train_bi_encoder.py data/train_data.json data/val_data.json models/bi_encoder_finetuned
 ```
  Run the Cross-encoder fine-tuning and re-ranking script: 
   ```bash
- python src/train_cross_encoder.py data/train_data.json data/val_data.json models/cross_encoder_finetuned
+ ex: python src/train_cross_encoder.py data/train_data.json data/val_data.json models/cross_encoder_finetuned
 ```
 
 step 4: Generating Retrieval Results:
@@ -125,3 +125,8 @@ For basic model:
 ```bash
 ex: python src/evaluate.py --qrel_file data/test_qrel.tsv --output_dir evaluation_results --mode basic
 ```
+
+## Performance Notes
+Running the retrieval code can take a significant amount of time, particularly when encoding the answers, unless executed on high-performance servers, such as the CS department's servers. The computational load stems from the simultaneous processing of Bi-encoder and Cross-encoder results and the calculation of various evaluation metrics.
+
+Interestingly, fine-tuning did not yield improved performance in this instance, and the results were below expectations. This may be due to potential issues during model training, and further investigation is planned to identify and address any underlying causes.
