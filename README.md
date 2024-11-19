@@ -98,7 +98,6 @@ step 2: basic retrieval, run the following command:
 ```bash
  python src/basic_retrieval.py data/Answers.json test_data.json topics2.json
 ```
-
 step3: Fine-Tuning the Models:
 
  Run the Bi-encoder fine-tuning script:
@@ -113,5 +112,16 @@ step3: Fine-Tuning the Models:
 step 4: Generating Retrieval Results:
 After fine-tuning, run the fine_tuned_retrieval.py script:
 ```bash
-python src/fine_tuned_retrieval.py data/Answers.json data/test_data.json data/topics_2.json results models/bi_encoder_finetuned models/cross_encoder_finetuned encoded_answers.pt
+ex: python src/fine_tuned_retrieval.py data/Answers.json data/test_data.json data/topics_2.json results models/bi_encoder_finetuned models/cross_encoder_finetuned encoded_answers.pt
+```
+
+step 5: Evaluate Retrieval Performance:
+Run the evaluation script to calculate precision, recall, MAP, nDCG, and other metrics:
+For fine_tuned model:
+```bash
+ex: python src/evaluate.py --qrel_file data/test_qrel.tsv --output_dir evaluation_results --mode fine_tune
+```
+For basic model:
+```bash
+ex: python src/evaluate.py --qrel_file data/test_qrel.tsv --output_dir evaluation_results --mode basic
 ```
