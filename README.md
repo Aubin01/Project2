@@ -63,14 +63,14 @@ ex: python src/fine_tuned_retrieval.py data/Answers.json data/test_data.json dat
 ## Outputs
 Upon running the retrieval scripts, eight output files will be generated:
 
-result_bi_1.tsv: Bi-encoder without fine-tuning on the test set.
-result_bi_2.tsv: Bi-encoder without fine-tuning on topic_2 file.
-result_bi_ft_1.tsv: Fine-tuned Bi-encoder on the test set.
-result_bi_ft_2.tsv: Fine-tuned Bi-encoder on topic_2 file.
-result_ce_1.tsv: Cross-encoder without fine-tuning on the test set.
-result_ce_2.tsv: Cross-encoder without fine-tuning on topic_2 file.
-result_ce_ft_1.tsv: Fine-tuned Cross-encoder on the test set.
-result_ce_ft_2.tsv: Fine-tuned Cross-encoder on topic_2 file.
+1. result_bi_1.tsv: Bi-encoder without fine-tuning on the test set.
+2. result_bi_2.tsv: Bi-encoder without fine-tuning on topic_2 file.
+3. result_bi_ft_1.tsv: Fine-tuned Bi-encoder on the test set.
+4. result_bi_ft_2.tsv: Fine-tuned Bi-encoder on topic_2 file.
+5. result_ce_1.tsv: Cross-encoder without fine-tuning on the test set.
+6. result_ce_2.tsv: Cross-encoder without fine-tuning on topic_2 file.
+7. result_ce_ft_1.tsv: Fine-tuned Cross-encoder on the test set.
+8. result_ce_ft_2.tsv: Fine-tuned Cross-encoder on topic_2 file.
 
 ## Evaluation
 Evaluate Retrieval Performance:
