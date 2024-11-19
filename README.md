@@ -1,95 +1,40 @@
-# Description
-This project applies various information retrieval models, including bi-encoders and cross-encoders, to retrieve relevant answers for user queries. The models are evaluated in fine-tuned and non-fine-tuned configurations across two datasets (topics_1 and topics_2). Key components include dataset preparation, model training, evaluation, and analysis of results. Insights from the project aim to improve precision and efficiency in neural retrieval systems.
+#### Bi-Encoder and Cross-Encoder Retrieval Models
 
-# python Files description
-Here’s an overview of the Python files in the project:
+## Project Description
+This project implements two advanced Information Retrieval (IR) models: Bi-encoder and Cross-encoder. The primary objective is to process travel-related queries and retrieve relevant documents by employing both basic and fine-tuned variants of these retrieval models. The Bi-encoder searches the entire document collection for initial retrieval, while the Cross-encoder re-ranks the top-100 results from the Bi-encoder for improved precision.
 
-# Core Files
-`split_data.py`
+The project evaluates retrieval performance using metrics such as precision@1, precision@5, recall@5, MAP, nDCG@5, and MRR, generating ski-jump plots for each model based on precision@5 across queries.
 
-Splits topics_1.json into training, validation, and test datasets.
-# Outputs:
-- train_topics.json
-- validation_topics.json
-- test_set.json
-# basic_retrieval.py
+## Table of Contents
+1. Files
+2. Installation
+3. How to Run the Code
+4. Outputs
+5. Evaluation
+6. Performance Notes
 
-Implements non-fine-tuned bi-encoder and cross-encoder models.
-Encodes queries and documents using FAISS for similarity search.
-Outputs results in TSV format`
-# fine_tuned_retrieval.py
+## Files
+1. load_data.py: Loads and preprocesses documents and queries by applying text cleaning. Supports embedding generation with a Bi-encoder, re-ranking with a Cross-encoder, and provides functions for model fine-tuning to improve retrieval.
 
-# Implements fine-tuned versions of bi-encoder and cross-encoder models.
-Trains models on qrel_1.tsv or qrel_2.tsv and evaluates their retrieval performance.
-Outputs fine-tuned results.
-# train_bi_encoder.py
+2. split_data.py: Splits the dataset into training, validation, and test sets, ensuring unique query-document pairs in each set for effective fine-tuning and evaluation.
 
-Script for training and fine-tuning the bi-encoder model using qrel_1.tsv or qrel_2.tsv.
-# train_cross_encoder.py
+3. basic_retrieval.py: Performs initial retrieval using the Bi-encoder model and re-ranks top results with the Cross-encoder, without fine-tuning.
 
-Script for training and fine-tuning the cross-encoder model on datasets.
-# evaluate.py
+4. train_bi_encoder.py: Fine-tunes and saves the Bi-encoder model on labeled training data to improve its ability to generate embeddings for retrieval.
 
-Evaluates model outputs using metrics such as:
-Precision@k, nDCG@k,MRR,Mean Average Precision (mAP)
-Outputs evaluation scores for analysis.
+5. fine_tune_cross_encoder.py: Fine-tunes and saves the Cross-encoder model, optimizing it to re-rank top-100 results from the Bi-encoder based on relevance.
 
-# query.py
+6. fine_tuned_retrieval.py: Runs retrieval using fine-tuned Bi-encoder and Cross-encoder models to generate more accurate, relevance-ranked results.
 
-Parses and preprocesses queries from JSON files for consistency during retrieval.
-# load_data.py
+7. evaluate.py: Calculates and outputs performance metrics (precision, recall, MAP, nDCG, MRR) for retrieval results of both fine-tuned and non-fine-tuned models, generating relevant visualizations.
 
-Contains utility functions for loading, parsing, and preprocessing datasets, QRELs, and model outputs.
-Ensures consistent data handling across scripts.
+## Installation
+Prerequisites:
 
-## Prerequisites
+Python 3.x
+ Required Python packages: pandas, argparse, matplotlib, ranx, sentence_transformers, toch 
 
-To run this project, ensure you have the following:
-
-1. **Python 3.x** installed on your system.
-2. Required Python libraries, which can be installed via:
-   ```bash
-   pip install -r "requirements"
-   ```
-`requirements`: sentence-transformers, faiss-cpu, torch numpy
-
-## Project structure
-- models/
-    - bi_encoder_finetuned
-    - cross_encoder_finetuned
-- data/
-    - Answers.json
-    - qrel_1.tsv
-    - test_data.json
-    - test_qrel.tsv
-    - topics_1.json
-    - topics_2.json
-    - train_data.json
-    - val_data.json
-- src/
-    - basic_retrieval.py
-    - fine_tuned_retrieval.py
-    - train_bi_encoder.py
-    - train_cross_encoder.py
-    - evaluate.py
-    - query.py
-    - load_data.py
-    - split_data.py
-    
-- results_file/
-    - result_bi_1.tsv
-    - result_bi_2.tsv
-    - result_bi_ft_1.tsv
-    - result_bi_ft_2.tsv
-    - result_ce_1.tsv
-    - result_ce_2.tsv
-    - result_ce_ft_1.tsv
-    - result_ce_ft_2.tsv
-evaluation_metrics.csv
-- README.md
-
-# `How to run the project`
-
+## How to Run the Code
 Step 1: to Split Data for Training and Testing, run the following command: 
 ```bash
 ex: python src/split_data.py data/topics_1.json data/qrel_1.tsv data/Answers.json
@@ -115,8 +60,23 @@ After fine-tuning, run the fine_tuned_retrieval.py script:
 ex: python src/fine_tuned_retrieval.py data/Answers.json data/test_data.json data/topics_2.json results models/bi_encoder_finetuned models/cross_encoder_finetuned encoded_answers.pt
 ```
 
-step 5: Evaluate Retrieval Performance:
+## Outputs
+Upon running the retrieval scripts, eight output files will be generated:
+
+result_bi_1.tsv: Bi-encoder without fine-tuning on the test set.
+result_bi_2.tsv: Bi-encoder without fine-tuning on topic_2 file.
+result_bi_ft_1.tsv: Fine-tuned Bi-encoder on the test set.
+result_bi_ft_2.tsv: Fine-tuned Bi-encoder on topic_2 file.
+result_ce_1.tsv: Cross-encoder without fine-tuning on the test set.
+result_ce_2.tsv: Cross-encoder without fine-tuning on topic_2 file.
+result_ce_ft_1.tsv: Fine-tuned Cross-encoder on the test set.
+result_ce_ft_2.tsv: Fine-tuned Cross-encoder on topic_2 file.
+
+## Evaluation
+Evaluate Retrieval Performance:
+
 Run the evaluation script to calculate precision, recall, MAP, nDCG, and other metrics:
+
 For fine_tuned model:
 ```bash
 ex: python src/evaluate.py --qrel_file data/test_qrel.tsv --output_dir evaluation_results --mode fine_tune
